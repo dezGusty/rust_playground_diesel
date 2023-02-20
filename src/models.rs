@@ -1,3 +1,4 @@
+use chrono::{DateTime, Utc, NaiveDateTime};
 use diesel::prelude::*;
 
 use super::schema::posts;
@@ -8,6 +9,7 @@ pub struct Post {
     pub title: String,
     pub body: String,
     pub published: i32,
+    pub entry_date: Option<NaiveDateTime>,
 }
 
 #[derive(Insertable)]
@@ -16,4 +18,5 @@ pub struct NewPost<'a> {
     pub title: &'a str,
     pub body: &'a str,
     pub published: i32,
+    pub entry_date: Option<NaiveDateTime>,
 }

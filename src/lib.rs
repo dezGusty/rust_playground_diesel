@@ -1,9 +1,12 @@
 pub mod models;
 pub mod schema;
 
+use chrono::Local;
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 use dotenv::dotenv;
+// use crate::schema::posts::entry_date;
+
 use self::models::{NewPost, Post};
 use std::env;
 
@@ -19,7 +22,12 @@ pub fn establish_connection() -> SqliteConnection {
 
 pub fn create_post<'a>(connection: &mut SqliteConnection, title: &'a str, body: &'a str) {
     use schema::posts;
-    let new_post = NewPost { title, body, published: 0 };
+    let new_post = NewPost {
+        title,
+        body,
+        published: 0,
+        entry_date: Some(chrono::Local::now().naive_local()),
+    };
 
     diesel::insert_into(posts::table)
         .values(&new_post)

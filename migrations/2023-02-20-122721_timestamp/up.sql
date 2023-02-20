@@ -1,0 +1,2 @@
+ALTER TABLE posts 
+  ADD entry_date TIMESTAMP NOT NULL;
