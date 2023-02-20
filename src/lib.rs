@@ -1,11 +1,9 @@
 pub mod models;
 pub mod schema;
 
-use chrono::Local;
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 use dotenv::dotenv;
-// use crate::schema::posts::entry_date;
 
 use self::models::{NewPost, Post};
 use std::env;

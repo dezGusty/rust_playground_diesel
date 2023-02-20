@@ -1,4 +1,4 @@
-use chrono::{DateTime, Utc, NaiveDateTime};
+use chrono::{NaiveDateTime};
 use diesel::prelude::*;
 
 use super::schema::posts;

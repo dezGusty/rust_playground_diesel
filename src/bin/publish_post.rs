@@ -1,4 +1,3 @@
-use self::models::Post;
 use diesel::prelude::*;
 use weighter::*;
 use std::env::args;
