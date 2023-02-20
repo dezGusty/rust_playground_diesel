@@ -4,6 +4,7 @@ pub mod schema;
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 use dotenv::dotenv;
+use self::models::{NewPost, Post};
 use std::env;
 
 pub fn establish_connection() -> SqliteConnection {
@@ -14,4 +15,23 @@ pub fn establish_connection() -> SqliteConnection {
         .expect(&format!("Error connecting to {}", database_url))
 
     // .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+}
+
+pub fn create_post<'a>(connection: &mut SqliteConnection, title: &'a str, body: &'a str) {
+    use schema::posts;
+    let new_post = NewPost { title, body, published: 0 };
+
+    diesel::insert_into(posts::table)
+        .values(&new_post)
+        .execute(connection)
+        .expect("Error saving new post");
+
+    let results = posts::table
+        .filter(posts::dsl::title.like(format!("%{}%", new_post.title)))
+        .load::<Post>(connection)
+        .expect("Error getting new post");
+
+    for result in results {
+        println!("{:?}", result);
+    }
 }
