@@ -1,11 +1,12 @@
 pub mod models;
 pub mod schema;
 
+use chrono::NaiveDateTime;
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 use dotenv::dotenv;
 
-use self::models::{NewPost, Post};
+use self::models::{NewPost, Post, NewWeight};
 use std::env;
 
 pub fn establish_connection() -> SqliteConnection {
@@ -40,4 +41,21 @@ pub fn create_post<'a>(connection: &mut SqliteConnection, title: &'a str, body: 
     for result in results {
         println!("{:?}", result);
     }
+}
+
+pub fn add_weight_entry(
+    connection: &mut SqliteConnection,
+    weight: f32,
+    measurement_date: NaiveDateTime,
+) {
+    use schema::weights;
+    let new_weight = NewWeight {
+        weight,
+        measurement_date,
+    };
+
+    diesel::insert_into(weights::table)
+        .values(&new_weight)
+        .execute(connection)
+        .expect("Error inserting weight");
 }

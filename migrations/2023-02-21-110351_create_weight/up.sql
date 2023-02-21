@@ -1,0 +1,5 @@
+CREATE TABLE weights (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    weight REAL NOT NULL,
+    measurement_date TIMESTAMP NOT NULL
+);
